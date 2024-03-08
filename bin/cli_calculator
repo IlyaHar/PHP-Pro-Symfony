@@ -1,0 +1,15 @@
+#!/usr/bin/env php
+<?php
+
+use App\calculator\GoodCalculator;
+use App\calculator\BetterCalculator;
+use App\calculator\BestCalculator;
+use App\calculator\Division;
+use App\calculator\Minus;
+use App\calculator\Multiply;
+use App\calculator\Plus;
+
+require_once __DIR__ . '/../examples/autoload.php';
+
+$calculator = new BestCalculator(new Multiply());
+echo $calculator->count(5, 5) . PHP_EOL;
