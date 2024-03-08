@@ -1,0 +1,46 @@
+#!/usr/bin/env php
+<?php
+
+use App\magic\Call;
+use App\magic\CallStatic;
+use App\magic\CloneMethod;
+use App\magic\Get;
+use App\magic\Invoke;
+use App\magic\Set;
+use App\magic\ToString;
+use App\magic\UnsetMethod;
+
+require_once  __DIR__ . '/../examples/autoload.php';
+
+try {
+    $unset = new UnsetMethod();
+    unset($unset->name);
+    echo PHP_EOL;
+
+    $set = new Set();
+    $set->value = 'value' . PHP_EOL;
+
+    $call = new Call();
+    $call->set('Ilya');
+    echo $call->get() . PHP_EOL;
+
+//    $get = new Get();
+//    echo $get->name . PHP_EOL;
+
+    $invoke = new Invoke();
+    $invoke('Ilya' . PHP_EOL);
+
+    $o1 = new CloneMethod();
+    $o2 = clone $o1;
+    $o2->date->modify('+1YEAR');
+
+    $obj = new ToString() ;
+    echo $obj . PHP_EOL;
+
+    CallStatic::set('Ilya');
+    echo CallStatic::get() . PHP_EOL;
+
+} catch (Error $e) {
+    echo 'ERROR: ' . $e->getMessage();
+}
+
