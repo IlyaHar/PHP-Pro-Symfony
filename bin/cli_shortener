@@ -1,0 +1,29 @@
+#!/usr/bin/env php
+<?php
+
+use App\Shortener\FileRepository;
+use App\Shortener\Helpers\UrlValidator;
+use App\Shortener\UrlAnywayConverter;
+use App\Shortener\UrlConverter;
+use GuzzleHttp\Client;
+
+require_once __DIR__ . '/../vendor/autoload.php';
+
+$config = [
+        'file' => __DIR__ . '/../storage/db.json',
+        'codeLength' => 4,
+];
+
+$file = new FileRepository($config['file']);
+$valid = new UrlValidator(new Client());
+$shortener = new UrlConverter($valid, $file, $config['codeLength']);
+
+try {
+    $url = 'https://ithillel.com';
+    echo $shortener->encode($url);
+//    echo $shortener->decode('Eio2');
+} catch (Exception $e) {
+    echo 'Error: ' . $e->getMessage();
+}
+
+echo PHP_EOL;
