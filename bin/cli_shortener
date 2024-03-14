@@ -1,29 +1,20 @@
 #!/usr/bin/env php
 <?php
 
-use App\Shortener\FileRepository;
-use App\Shortener\Helpers\UrlValidator;
-use App\Shortener\UrlAnywayConverter;
-use App\Shortener\UrlConverter;
-use GuzzleHttp\Client;
+use App\MyShortener\Repository\FileRepository;
+use App\MyShortener\UrlDecoder;
+use App\MyShortener\UrlEncoder;
+use App\MyShortener\Validators\UrlValidator;
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
-$config = [
-        'file' => __DIR__ . '/../storage/db.json',
-        'codeLength' => 4,
-];
+$file = __DIR__ . '/../storage/storage.json';
 
-$file = new FileRepository($config['file']);
-$valid = new UrlValidator(new Client());
-$shortener = new UrlConverter($valid, $file, $config['codeLength']);
+$validator = new UrlValidator();
+$fileRepository = new FileRepository($file);
+$encoder = new UrlEncoder($validator, $fileRepository, 5);
+$decoder = new UrlDecoder($fileRepository);
 
-try {
-    $url = 'https://ithillel.com';
-    echo $shortener->encode($url);
-//    echo $shortener->decode('Eio2');
-} catch (Exception $e) {
-    echo 'Error: ' . $e->getMessage();
-}
+echo $encoder->encode('https://ithillel.com') . PHP_EOL;
+echo $decoder->decode('8o7hp') . PHP_EOL;
 
-echo PHP_EOL;
